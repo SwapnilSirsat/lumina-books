@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, ShoppingBag, ArrowRight, BookOpen, ChevronLeft } from 'lucide-react';
 import { useBookLogic } from './hooks/useBookLogic';
 import { LibraryCard } from './components/LibraryCard';
-import { MOCK_BOOKS } from './mocklibrary/mockBooks';
+import { MOCK_BOOKS } from './mocklibrary/dummyBooks';
 
 const appleTransition = { duration: 1.5, ease: [0.32, 0, 0.07, 1] as [number, number, number, number] };
 
