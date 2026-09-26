@@ -1,42 +1,47 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Book3D } from './Book3D';
-import type { Book } from '../types/libraryTypes';
+import { BookCard3D } from './BookCard3D';
+import type { Book } from '../types/booktype';
 
 interface FeatureCardProps {
   book: Book;
-  onOpenDetail: (book: Book) => void;
+  onOpen: (book: Book) => void;
+  color?: string;
+  tagline: string;
 }
 
-export const FeatureCard = ({ book, onOpenDetail }: FeatureCardProps) => {
-  const [hovering, setHovering] = useState(false);
-
+export const FeatureCard = ({ book, onOpen, color = "bg-white", tagline }: FeatureCardProps) => {
   return (
-    <div 
-      className={`relative w-full aspect-[4/5] rounded-[48px] ${book.bgColor} flex flex-col p-12 transition-all duration-700 overflow-hidden cursor-pointer`}
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
-      onClick={() => onOpenDetail(book)}
-    >
+    <div className={`apple-card min-w-[350px] md:min-w-[480px] h-[600px] flex flex-col p-12 relative group ${color}`}>
       <div className="z-10">
-        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-black/30 mb-2">{book.genre}</p>
-        <h3 className="text-4xl font-bold tracking-tighter leading-[0.9] max-w-[200px] text-neutral-800">
-          {book.title}
-        </h3>
-      </div>
-
-      <div className="mt-auto self-center mb-10 translate-x-4">
-        <Book3D book={book} isOpen={hovering} />
-      </div>
-
-      <div className="absolute bottom-10 left-12 flex items-center gap-6">
-        <p className="text-xl font-bold tracking-tight">${book.price}</p>
-        <motion.button 
-          whileHover={{ x: 5 }}
-          className="bg-black text-white px-6 py-2 rounded-full text-xs font-bold transition-all"
+        <motion.p 
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="text-sm font-bold uppercase tracking-widest text-neutral-400 mb-2"
         >
-          Explore →
-        </motion.button>
+          {book.genre}
+        </motion.p>
+        <motion.h3 
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-4xl font-bold tracking-tighter leading-tight max-w-[250px]"
+        >
+          {tagline}
+        </motion.h3>
+      </div>
+
+      {/* The 3D Book Floating in the card */}
+      <div className="absolute bottom-[-20px] right-[-20px] scale-110 md:scale-125 origin-bottom-right">
+        <BookCard3D book={book} onOpen={onOpen} />
+      </div>
+
+      <div className="mt-auto z-10">
+        <button 
+          onClick={() => onOpen(book)}
+          className="bg-[#0071e3] text-white px-6 py-2 rounded-full text-sm font-bold hover:brightness-110 transition-all"
+        >
+          Explore
+        </button>
       </div>
     </div>
   );
